@@ -1,6 +1,7 @@
 # ProjectileShooting
-Project demonstrating in Unity how to fire a projectile at a target by either specifying its initial velocity or initial angle. Also draws out the projectile's expected trajectory.
 
-Projectile physics calculations are inside the `ProjectileMath.cs` file.
+Proyecto que demuestre en Unity cómo disparar un proyectil a un objetivo especificando su velocidad inicial o ángulo inicial. También dibuja la trayectoria esperada del proyectil.
 
-![](http://i.imgur.com/ORco4k3.gif)
+Los cálculos de física de proyectiles están dentro del archivo `ProjectileMath.cs` .
+
+
