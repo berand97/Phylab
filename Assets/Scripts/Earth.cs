@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class CambiarEscenas : MonoBehaviour
+public class Earth : MonoBehaviour
 {
-
-    public Image fundido;
 
     void OnMouseDown()
     {
@@ -24,16 +21,12 @@ public class CambiarEscenas : MonoBehaviour
     {
         this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
-        fundido.CrossFadeAlpha(1, 0.5f, false);
         StartCoroutine(CargoEScena());
     }
 
     IEnumerator CargoEScena()
     {
         yield return new WaitForSeconds(1);
-        Application.LoadLevel("Mundos");
+        Application.LoadLevel("IntroPlanet");
     }
-
-
-
 }
