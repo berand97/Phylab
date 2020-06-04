@@ -24,36 +24,36 @@ public class Math3d : MonoBehaviour
     }
 
 
-    //increase or decrease the length of vector by size
+    //aumentar o disminuir la longitud del vector por tamaño
     public static Vector3 AddVectorLength(Vector3 vector, float size)
     {
 
-        //get the vector length
+        //obtener la longitud del vector
         float magnitude = Vector3.Magnitude(vector);
 
-        //change the length
-        magnitude += size;
+        // cambiar la longitud
+                magnitude += size;
 
-        //normalize the vector
+        //Normalizar el  vector
         Vector3 vectorNormalized = Vector3.Normalize(vector);
 
-        //scale the vector
+        //Escalar el vector
         return Vector3.Scale(vectorNormalized, new Vector3(magnitude, magnitude, magnitude));
     }
 
-    //create a vector of direction "vector" with length "size"
+    //crear un vector de dirección "vector" con longitud "tamaño"
     public static Vector3 SetVectorLength(Vector3 vector, float size)
     {
 
-        //normalize the vector
+        //normalizar el vector
         Vector3 vectorNormalized = Vector3.Normalize(vector);
 
-        //scale the vector
+        //escalar el vector
         return vectorNormalized *= size;
     }
 
 
-    //caclulate the rotational difference from A to B
+    //calcular la diferencia rotacional de A a B
     public static Quaternion SubtractRotation(Quaternion B, Quaternion A)
     {
 
@@ -61,29 +61,29 @@ public class Math3d : MonoBehaviour
         return C;
     }
 
-    //Find the line of intersection between two planes.	The planes are defined by a normal and a point on that plane.
-    //The outputs are a point on the line and a vector which indicates it's direction. If the planes are not parallel, 
-    //the function outputs true, otherwise false.
+    // Encuentra la línea de intersección entre dos planos. Los planos están definidos por una normal y un punto en ese plano.
+    // Las salidas son un punto en la línea y un vector que indica su dirección. Si los planos no son paralelos,
+    // la función genera verdadero, de lo contrario falso.
     public static bool PlanePlaneIntersection(out Vector3 linePoint, out Vector3 lineVec, Vector3 plane1Normal, Vector3 plane1Position, Vector3 plane2Normal, Vector3 plane2Position)
     {
 
         linePoint = Vector3.zero;
         lineVec = Vector3.zero;
 
-        //We can get the direction of the line of intersection of the two planes by calculating the 
-        //cross product of the normals of the two planes. Note that this is just a direction and the line
-        //is not fixed in space yet. We need a point for that to go with the line vector.
+        // Podemos obtener la dirección de la línea de intersección de los dos planos calculando el
+        // producto cruzado de las normales de los dos planos. Tenga en cuenta que esto es solo una dirección y la línea
+        // aún no está arreglado en el espacio. Necesitamos un punto para que vaya con el vector de línea.
         lineVec = Vector3.Cross(plane1Normal, plane2Normal);
 
-        //Next is to calculate a point on the line to fix it's position in space. This is done by finding a vector from
-        //the plane2 location, moving parallel to it's plane, and intersecting plane1. To prevent rounding
-        //errors, this vector also has to be perpendicular to lineDirection. To get this vector, calculate
-        //the cross product of the normal of plane2 and the lineDirection.		
+        // Lo siguiente es calcular un punto en la línea para fijar su posición en el espacio. Esto se hace buscando un vector de
+        // la ubicación del plano 2, moviéndose paralela a su plano e intersectando el plano 1. Para evitar el redondeo
+        // errores, este vector también tiene que ser perpendicular a lineDirection. Para obtener este vector, calcule
+        // el producto cruzado de la normalidad de plane2 y lineDirection.	
         Vector3 ldir = Vector3.Cross(plane2Normal, lineVec);
 
         float denominator = Vector3.Dot(plane1Normal, ldir);
 
-        //Prevent divide by zero and rounding errors by requiring about 5 degrees angle between the planes.
+        // Evita dividir entre cero y errores de redondeo al requerir un ángulo de aproximadamente 5 grados entre los planos.
         if (Mathf.Abs(denominator) > 0.006f)
         {
 
@@ -94,15 +94,15 @@ public class Math3d : MonoBehaviour
             return true;
         }
 
-        //output not valid
+        // salida no válida
         else
         {
             return false;
         }
     }
 
-    //Get the intersection between a line and a plane. 
-    //If the line and plane are not parallel, the function outputs true, otherwise false.
+    // Obtener la intersección entre una línea y un plano.
+    // Si la línea y el plano no son paralelos, la función genera verdadero, de lo contrario falso.
     public static bool LinePlaneIntersection(out Vector3 intersection, Vector3 linePoint, Vector3 lineVec, Vector3 planeNormal, Vector3 planePoint)
     {
 
@@ -112,16 +112,16 @@ public class Math3d : MonoBehaviour
         Vector3 vector;
         intersection = Vector3.zero;
 
-        //calculate the distance between the linePoint and the line-plane intersection point
+        // calcula la distancia entre el punto de línea y el punto de intersección del plano de línea
         dotNumerator = Vector3.Dot((planePoint - linePoint), planeNormal);
         dotDenominator = Vector3.Dot(lineVec, planeNormal);
 
-        //line and plane are not parallel
+        // línea y plano no son paralelos
         if (dotDenominator != 0.0f)
         {
             length = dotNumerator / dotDenominator;
 
-            //create a vector from the linePoint to the intersection point
+            // crea un vector desde el LinePoint hasta el punto de intersección
             vector = SetVectorLength(lineVec, length);
 
             //get the coordinates of the line-plane intersection point
@@ -130,16 +130,16 @@ public class Math3d : MonoBehaviour
             return true;
         }
 
-        //output not valid
+        // salida no válida
         else
         {
             return false;
         }
     }
 
-    //Calculate the intersection point of two lines. Returns true if lines intersect, otherwise false.
-    //Note that in 3d, two lines do not intersect most of the time. So if the two lines are not in the 
-    //same plane, use ClosestPointsOnTwoLines() instead.
+    // Calcular el punto de intersección de dos líneas. Devuelve verdadero si las líneas se cruzan, de lo contrario falso.
+    // Tenga en cuenta que en 3d, dos líneas no se cruzan la mayor parte del tiempo. Entonces, si las dos líneas no están en el
+    // mismo plano, use ClosestPointsOnTwoLines () en su lugar.
     public static bool LineLineIntersection(out Vector3 intersection, Vector3 linePoint1, Vector3 lineVec1, Vector3 linePoint2, Vector3 lineVec2)
     {
 
@@ -151,14 +151,14 @@ public class Math3d : MonoBehaviour
 
         float planarFactor = Vector3.Dot(lineVec3, crossVec1and2);
 
-        //Lines are not coplanar. Take into account rounding errors.
+        // Las líneas no son coplanares. Tener en cuenta los errores de redondeo.
         if ((planarFactor >= 0.00001f) || (planarFactor <= -0.00001f))
         {
 
             return false;
         }
 
-        //Note: sqrMagnitude does x*x+y*y+z*z on the input vector.
+        // Nota: sqrMagnitude hace x * x + y * y + z * z en el vector de entrada.
         float s = Vector3.Dot(crossVec3and2, crossVec1and2) / crossVec1and2.sqrMagnitude;
 
         if ((s >= 0.0f) && (s <= 1.0f))
@@ -174,9 +174,9 @@ public class Math3d : MonoBehaviour
         }
     }
 
-    //Two non-parallel lines which may or may not touch each other have a point on each line which are closest
-    //to each other. This function finds those two points. If the lines are not parallel, the function 
-    //outputs true, otherwise false.
+    // Dos líneas no paralelas que pueden o no tocarse entre sí tienen un punto en cada línea más cercano
+    // el uno al otro. Esta función encuentra esos dos puntos. Si las líneas no son paralelas, la función
+    // produce verdadero, de lo contrario falso.
     public static bool ClosestPointsOnTwoLines(out Vector3 closestPointLine1, out Vector3 closestPointLine2, Vector3 linePoint1, Vector3 lineVec1, Vector3 linePoint2, Vector3 lineVec2)
     {
 
@@ -189,7 +189,7 @@ public class Math3d : MonoBehaviour
 
         float d = a * e - b * b;
 
-        //lines are not parallel
+        // las líneas no son paralelas
         if (d != 0.0f)
         {
 
@@ -212,12 +212,12 @@ public class Math3d : MonoBehaviour
         }
     }
 
-    //This function returns a point which is a projection from a point to a line.
-    //The line is regarded infinite. If the line is finite, use ProjectPointOnLineSegment() instead.
+    // Esta función devuelve un punto que es una proyección de un punto a una línea.
+    // La línea se considera infinita. Si la línea es finita, use ProjectPointOnLineSegment () en su lugar.
     public static Vector3 ProjectPointOnLine(Vector3 linePoint, Vector3 lineVec, Vector3 point)
     {
 
-        //get vector from point on line to point in space
+        // obtener un vector de punto en línea a punto en el espacio
         Vector3 linePointToPoint = point - linePoint;
 
         float t = Vector3.Dot(linePointToPoint, lineVec);
@@ -225,10 +225,10 @@ public class Math3d : MonoBehaviour
         return linePoint + lineVec * t;
     }
 
-    //This function returns a point which is a projection from a point to a line segment.
-    //If the projected point lies outside of the line segment, the projected point will 
-    //be clamped to the appropriate line edge.
-    //If the line is infinite instead of a segment, use ProjectPointOnLine() instead.
+    // Esta función devuelve un punto que es una proyección de un punto a un segmento de línea.
+    // Si el punto proyectado se encuentra fuera del segmento de línea, el punto proyectado
+    // se sujetará al borde de línea apropiado.
+    // Si la línea es infinita en lugar de un segmento, use ProjectPointOnLine () en su lugar.
     public static Vector3 ProjectPointOnLineSegment(Vector3 linePoint1, Vector3 linePoint2, Vector3 point)
     {
 
@@ -238,7 +238,7 @@ public class Math3d : MonoBehaviour
 
         int side = PointOnWhichSideOfLineSegment(linePoint1, linePoint2, projectedPoint);
 
-        //The projected point is on the line segment
+        // El punto proyectado está en el segmento de línea.
         if (side == 0)
         {
 
@@ -257,60 +257,60 @@ public class Math3d : MonoBehaviour
             return linePoint2;
         }
 
-        //output is invalid
+        // la salida no es válida
         return Vector3.zero;
     }
 
-    //This function returns a point which is a projection from a point to a plane.
+    // Esta función devuelve un punto que es una proyección de un punto a un plano.
     public static Vector3 ProjectPointOnPlane(Vector3 planeNormal, Vector3 planePoint, Vector3 point)
     {
 
         float distance;
         Vector3 translationVector;
 
-        //First calculate the distance from the point to the plane:
+        // Primero calcule la distancia desde el punto al plano:
         distance = SignedDistancePlanePoint(planeNormal, planePoint, point);
 
-        //Reverse the sign of the distance
+        // Invierte el signo de la distancia
         distance *= -1;
 
-        //Get a translation vector
+        // Obtenga un vector de traducción
         translationVector = SetVectorLength(planeNormal, distance);
 
-        //Translate the point to form a projection
+        // Traducir el punto para formar una proyección
         return point + translationVector;
     }
 
-    //Projects a vector onto a plane. The output is not normalized.
+    // Proyecta un vector en un plano. La salida no está normalizada.
     public static Vector3 ProjectVectorOnPlane(Vector3 planeNormal, Vector3 vector)
     {
 
         return vector - (Vector3.Dot(vector, planeNormal) * planeNormal);
     }
 
-    //Get the shortest distance between a point and a plane. The output is signed so it holds information
-    //as to which side of the plane normal the point is.
+    // Obtenga la distancia más corta entre un punto y un plano. La salida se firma para que contenga información
+    // en cuanto a qué lado del plano normal es el punto.
     public static float SignedDistancePlanePoint(Vector3 planeNormal, Vector3 planePoint, Vector3 point)
     {
 
         return Vector3.Dot(planeNormal, (point - planePoint));
     }
 
-    //This function calculates a signed (+ or - sign instead of being ambiguous) dot product. It is basically used
-    //to figure out whether a vector is positioned to the left or right of another vector. The way this is done is
-    //by calculating a vector perpendicular to one of the vectors and using that as a reference. This is because
-    //the result of a dot product only has signed information when an angle is transitioning between more or less
-    //then 90 degrees.
+    // Esta función calcula un producto de puntos con signo (+ o - en lugar de ser ambiguo). Básicamente se usa
+    // para determinar si un vector está posicionado a la izquierda o derecha de otro vector. La forma en que se hace esto es
+    // calculando un vector perpendicular a uno de los vectores y utilizándolo como referencia. Esto es porque
+    // el resultado de un producto de puntos solo tiene información firmada cuando un ángulo está en transición entre más o menos
+    // luego 90 grados.
     public static float SignedDotProduct(Vector3 vectorA, Vector3 vectorB, Vector3 normal)
     {
 
         Vector3 perpVector;
         float dot;
 
-        //Use the geometry object normal and one of the input vectors to calculate the perpendicular vector
+        // Usa el objeto de geometría normal y uno de los vectores de entrada para calcular el vector perpendicular
         perpVector = Vector3.Cross(normal, vectorA);
 
-        //Now calculate the dot product between the perpendicular vector (perpVector) and the other input vector
+        // Ahora calcule el producto punto entre el vector perpendicular (perpVector) y el otro vector de entrada
         dot = Vector3.Dot(perpVector, vectorB);
 
         return dot;
@@ -321,44 +321,44 @@ public class Math3d : MonoBehaviour
         Vector3 perpVector;
         float angle;
 
-        //Use the geometry object normal and one of the input vectors to calculate the perpendicular vector
+        // Usa el objeto de geometría normal y uno de los vectores de entrada para calcular el vector perpendicular
         perpVector = Vector3.Cross(normal, referenceVector);
 
-        //Now calculate the dot product between the perpendicular vector (perpVector) and the other input vector
+        // Ahora calcule el producto punto entre el vector perpendicular (perpVector) y el otro vector de entrada
         angle = Vector3.Angle(referenceVector, otherVector);
         angle *= Mathf.Sign(Vector3.Dot(perpVector, otherVector));
 
         return angle;
     }
 
-    //Calculate the angle between a vector and a plane. The plane is made by a normal vector.
-    //Output is in radians.
+    // Calcula el ángulo entre un vector y un plano. El plano está hecho por un vector normal.
+    // La salida está en radianes.
     public static float AngleVectorPlane(Vector3 vector, Vector3 normal)
     {
 
         float dot;
         float angle;
 
-        //calculate the the dot product between the two input vectors. This gives the cosine between the two vectors
+        // calcula el producto punto entre los dos vectores de entrada. Esto da el coseno entre los dos vectores.
         dot = Vector3.Dot(vector, normal);
 
-        //this is in radians
+        // esto está en radianes
         angle = (float)Math.Acos(dot);
 
-        return 1.570796326794897f - angle; //90 degrees - angle
+        return 1.570796326794897f - angle; // 90 grados - ángulo
     }
 
-    //Calculate the dot product as an angle
+    // Calcula el producto escalar como un ángulo
     public static float DotProductAngle(Vector3 vec1, Vector3 vec2)
     {
 
         double dot;
         double angle;
 
-        //get the dot product
+        // obtener el producto punto
         dot = Vector3.Dot(vec1, vec2);
 
-        //Clamp to prevent NaN error. Shouldn't need this in the first place, but there could be a rounding error issue.
+        // Abrazadera para evitar errores de NaN. No debería necesitar esto en primer lugar, pero podría haber un problema de error de redondeo.
         if (dot < -1.0f)
         {
             dot = -1.0f;
@@ -368,73 +368,73 @@ public class Math3d : MonoBehaviour
             dot = 1.0f;
         }
 
-        //Calculate the angle. The output is in radians
-        //This step can be skipped for optimization...
+        // Calcula el ángulo. La salida está en radianes.
+        // Este paso se puede omitir para la optimización ...
         angle = Math.Acos(dot);
 
         return (float)angle;
     }
 
-    //Convert a plane defined by 3 points to a plane defined by a vector and a point. 
-    //The plane point is the middle of the triangle defined by the 3 points.
+    // Convierte un plano definido por 3 puntos en un plano definido por un vector y un punto.
+    // El punto plano es el centro del triángulo definido por los 3 puntos.
     public static void PlaneFrom3Points(out Vector3 planeNormal, out Vector3 planePoint, Vector3 pointA, Vector3 pointB, Vector3 pointC)
     {
 
         planeNormal = Vector3.zero;
         planePoint = Vector3.zero;
 
-        //Make two vectors from the 3 input points, originating from point A
+        // Hacer dos vectores a partir de los 3 puntos de entrada, originados desde el punto A
         Vector3 AB = pointB - pointA;
         Vector3 AC = pointC - pointA;
 
-        //Calculate the normal
+        // Calcular la normal
         planeNormal = Vector3.Normalize(Vector3.Cross(AB, AC));
 
-        //Get the points in the middle AB and AC
+        // Obtenga los puntos en el medio AB y AC
         Vector3 middleAB = pointA + (AB / 2.0f);
         Vector3 middleAC = pointA + (AC / 2.0f);
 
-        //Get vectors from the middle of AB and AC to the point which is not on that line.
+        // Obtener vectores desde el medio de AB y AC hasta el punto que no está en esa línea.
         Vector3 middleABtoC = pointC - middleAB;
         Vector3 middleACtoB = pointB - middleAC;
 
-        //Calculate the intersection between the two lines. This will be the center 
-        //of the triangle defined by the 3 points.
-        //We could use LineLineIntersection instead of ClosestPointsOnTwoLines but due to rounding errors 
-        //this sometimes doesn't work.
+        // Calcula la intersección entre las dos líneas. Este será el centro
+        // del triángulo definido por los 3 puntos.
+        // Podríamos usar LineLineIntersection en lugar de ClosestPointsOnTwoLines pero debido a errores de redondeo
+        // esto a veces no funciona.
         Vector3 temp;
         ClosestPointsOnTwoLines(out planePoint, out temp, middleAB, middleABtoC, middleAC, middleACtoB);
     }
 
-    //Returns the forward vector of a quaternion
+    // Devuelve el vector directo de un cuaternión
     public static Vector3 GetForwardVector(Quaternion q)
     {
 
         return q * Vector3.forward;
     }
 
-    //Returns the up vector of a quaternion
+    // Devuelve el vector directo de un cuaternión
     public static Vector3 GetUpVector(Quaternion q)
     {
 
         return q * Vector3.up;
     }
 
-    //Returns the right vector of a quaternion
+    // Devuelve el vector correcto de un cuaternión
     public static Vector3 GetRightVector(Quaternion q)
     {
 
         return q * Vector3.right;
     }
 
-    //Gets a quaternion from a matrix
+    // Obtiene un cuaternión de una matriz
     public static Quaternion QuaternionFromMatrix(Matrix4x4 m)
     {
 
         return Quaternion.LookRotation(m.GetColumn(2), m.GetColumn(1));
     }
 
-    //Gets a position from a matrix
+    // Obtiene una posición de una matriz
     public static Vector3 PositionFromMatrix(Matrix4x4 m)
     {
 
@@ -442,84 +442,84 @@ public class Math3d : MonoBehaviour
         return new Vector3(vector4Position.x, vector4Position.y, vector4Position.z);
     }
 
-    //This is an alternative for Quaternion.LookRotation. Instead of aligning the forward and up vector of the game 
-    //object with the input vectors, a custom direction can be used instead of the fixed forward and up vectors.
-    //alignWithVector and alignWithNormal are in world space.
-    //customForward and customUp are in object space.
-    //Usage: use alignWithVector and alignWithNormal as if you are using the default LookRotation function.
-    //Set customForward and customUp to the vectors you wish to use instead of the default forward and up vectors.
+    // Esta es una alternativa para Quaternion.LookRotation. En lugar de alinear el vector hacia adelante y hacia arriba del juego
+    // objeto con los vectores de entrada, se puede usar una dirección personalizada en lugar de los vectores fijos hacia adelante y hacia arriba.
+    // alignWithVector y alignWithNormal están en el espacio mundial.
+    // customForward y customUp están en el espacio de objetos.
+    // Uso: use alignWithVector y alignWithNormal como si estuviera usando la función LookRotation predeterminada.
+    // Establezca customForward y customUp en los vectores que desea utilizar en lugar de los vectores predeterminados hacia adelante y hacia arriba.
     public static void LookRotationExtended(ref GameObject gameObjectInOut, Vector3 alignWithVector, Vector3 alignWithNormal, Vector3 customForward, Vector3 customUp)
     {
 
-        //Set the rotation of the destination
+        // Establecer la rotación del destino
         Quaternion rotationA = Quaternion.LookRotation(alignWithVector, alignWithNormal);
 
-        //Set the rotation of the custom normal and up vectors. 
-        //When using the default LookRotation function, this would be hard coded to the forward and up vector.
+        // Establece la rotación de los vectores normal y superior personalizados.
+        // Cuando se usa la función LookRotation predeterminada, esto estaría codificado en el vector hacia adelante y hacia arriba.
         Quaternion rotationB = Quaternion.LookRotation(customForward, customUp);
 
         //Calculate the rotation
         gameObjectInOut.transform.rotation = rotationA * Quaternion.Inverse(rotationB);
     }
 
-    //This function transforms one object as if it was parented to the other.
-    //Before using this function, the Init() function must be called
-    //Input: parentRotation and parentPosition: the current parent transform.
-    //Input: startParentRotation and startParentPosition: the transform of the parent object at the time the objects are parented.
-    //Input: startChildRotation and startChildPosition: the transform of the child object at the time the objects are parented.
-    //Output: childRotation and childPosition.
-    //All transforms are in world space.
+    // Esta función transforma un objeto como si estuviera parental al otro.
+    // Antes de usar esta función, la función Init () debe llamarse
+    // Entrada: parentRotation y parentPosition: la transformación principal actual.
+    // Entrada: startParentRotation y startParentPosition: la transformación del objeto primario en el momento en que los objetos son parentales.
+    // Entrada: startChildRotation y startChildPosition: la transformación del objeto secundario en el momento en que los objetos son parentales.
+    // Salida: childRotation y childPosition.
+    // Todas las transformaciones están en el espacio mundial.
     public static void TransformWithParent(out Quaternion childRotation, out Vector3 childPosition, Quaternion parentRotation, Vector3 parentPosition, Quaternion startParentRotation, Vector3 startParentPosition, Quaternion startChildRotation, Vector3 startChildPosition)
     {
 
         childRotation = Quaternion.identity;
         childPosition = Vector3.zero;
 
-        //set the parent start transform
+        // establece la transformación de inicio principal
         tempParent.rotation = startParentRotation;
         tempParent.position = startParentPosition;
         tempParent.localScale = Vector3.one; //to prevent scale wandering
 
-        //set the child start transform
+        // establece la transformación de inicio secundario
         tempChild.rotation = startChildRotation;
         tempChild.position = startChildPosition;
-        tempChild.localScale = Vector3.one; //to prevent scale wandering
+        tempChild.localScale = Vector3.one; // para evitar el desplazamiento de la escala
 
-        //translate and rotate the child by moving the parent
+        // traduce y rota al niño moviendo al padre
         tempParent.rotation = parentRotation;
         tempParent.position = parentPosition;
 
-        //get the child transform
+        // consigue que el niño se transforme
         childRotation = tempChild.rotation;
         childPosition = tempChild.position;
     }
 
-    //With this function you can align a triangle of an object with any transform.
-    //Usage: gameObjectInOut is the game object you want to transform.
-    //alignWithVector, alignWithNormal, and alignWithPosition is the transform with which the triangle of the object should be aligned with.
-    //triangleForward, triangleNormal, and trianglePosition is the transform of the triangle from the object.
-    //alignWithVector, alignWithNormal, and alignWithPosition are in world space.
-    //triangleForward, triangleNormal, and trianglePosition are in object space.
-    //trianglePosition is the mesh position of the triangle. The effect of the scale of the object is handled automatically.
-    //trianglePosition can be set at any position, it does not have to be at a vertex or in the middle of the triangle.
+    // Con esta función puedes alinear un triángulo de un objeto con cualquier transformación.
+    // Uso: gameObjectInOut es el objeto del juego que quieres transformar.
+    // alignWithVector, alignWithNormal y alignWithPosition es la transformación con la que se debe alinear el triángulo del objeto.
+    // triangleForward, triangleNormal, y trianglePosition es la transformación del triángulo del objeto.
+    // alignWithVector, alignWithNormal y alignWithPosition están en el espacio mundial.
+    // triangleForward, triangleNormal, y trianglePosition están en el espacio de objetos.
+    // trianglePosition es la posición de malla del triángulo. El efecto de la escala del objeto se maneja automáticamente.
+    // trianglePosition se puede establecer en cualquier posición, no tiene que estar en un vértice o en el medio del triángulo.
     public static void PreciseAlign(ref GameObject gameObjectInOut, Vector3 alignWithVector, Vector3 alignWithNormal, Vector3 alignWithPosition, Vector3 triangleForward, Vector3 triangleNormal, Vector3 trianglePosition)
     {
 
-        //Set the rotation.
+        // Establecer la rotación.
         LookRotationExtended(ref gameObjectInOut, alignWithVector, alignWithNormal, triangleForward, triangleNormal);
 
-        //Get the world space position of trianglePosition
+        // Obtener la posición espacial mundial de trianglePosition
         Vector3 trianglePositionWorld = gameObjectInOut.transform.TransformPoint(trianglePosition);
 
         //Get a vector from trianglePosition to alignWithPosition
         Vector3 translateVector = alignWithPosition - trianglePositionWorld;
 
-        //Now transform the object so the triangle lines up correctly.
+        // Ahora transforma el objeto para que el triángulo se alinee correctamente.
         gameObjectInOut.transform.Translate(translateVector, Space.World);
     }
 
 
-    //Convert a position, direction, and normal vector to a transform
+    // Convierte una posición, dirección y vector normal en una transformación
     void VectorsToTransform(ref GameObject gameObjectInOut, Vector3 positionVector, Vector3 directionVector, Vector3 normalVector)
     {
 
@@ -527,12 +527,12 @@ public class Math3d : MonoBehaviour
         gameObjectInOut.transform.rotation = Quaternion.LookRotation(directionVector, normalVector);
     }
 
-    //This function finds out on which side of a line segment the point is located.
-    //The point is assumed to be on a line created by linePoint1 and linePoint2. If the point is not on
-    //the line segment, project it on the line using ProjectPointOnLine() first.
-    //Returns 0 if point is on the line segment.
-    //Returns 1 if point is outside of the line segment and located on the side of linePoint1.
-    //Returns 2 if point is outside of the line segment and located on the side of linePoint2.
+    // Esta función descubre en qué lado de un segmento de línea se encuentra el punto.
+    // Se supone que el punto está en una línea creada por linePoint1 y linePoint2. Si el punto no está encendido
+    // el segmento de línea, proyecte primero en la línea usando ProjectPointOnLine ().
+    // Devuelve 0 si el punto está en el segmento de línea.
+    // Devuelve 1 si el punto está fuera del segmento de línea y se encuentra al lado de linePoint1.
+    // Devuelve 2 si el punto está fuera del segmento de línea y se encuentra al lado de linePoint2.
     public static int PointOnWhichSideOfLineSegment(Vector3 linePoint1, Vector3 linePoint2, Vector3 point)
     {
 
@@ -541,18 +541,18 @@ public class Math3d : MonoBehaviour
 
         float dot = Vector3.Dot(pointVec, lineVec);
 
-        //point is on side of linePoint2, compared to linePoint1
+        // el punto está del lado de linePoint2, en comparación con linePoint1
         if (dot > 0)
         {
 
-            //point is on the line segment
+            // el punto está en el segmento de línea
             if (pointVec.magnitude <= lineVec.magnitude)
             {
 
                 return 0;
             }
 
-            //point is not on the line segment and it is on the side of linePoint2
+            // el punto no está en el segmento de línea y está en el lado de linePoint2
             else
             {
 
@@ -560,8 +560,8 @@ public class Math3d : MonoBehaviour
             }
         }
 
-        //Point is not on side of linePoint2, compared to linePoint1.
-        //Point is not on the line segment and it is on the side of linePoint1.
+        // El punto no está del lado de linePoint2, en comparación con linePoint1.
+        // El punto no está en el segmento de línea y está en el lado de linePoint1.
         else
         {
 
@@ -570,9 +570,9 @@ public class Math3d : MonoBehaviour
     }
 
 
-    //Returns the pixel distance from the mouse pointer to a line.
-    //Alternative for HandleUtility.DistanceToLine(). Works both in Editor mode and Play mode.
-    //Do not call this function from OnGUI() as the mouse position will be wrong.
+    // Devuelve la distancia de píxeles desde el puntero del mouse a una línea.
+    // Alternativa para HandleUtility.DistanceToLine (). Funciona tanto en modo Editor como en modo Play.
+    // No llame a esta función desde OnGUI () ya que la posición del mouse será incorrecta.
     public static float MouseDistanceToLine(Vector3 linePoint1, Vector3 linePoint2)
     {
 
@@ -604,7 +604,7 @@ public class Math3d : MonoBehaviour
         Vector3 screenPos2 = currentCamera.WorldToScreenPoint(linePoint2);
         Vector3 projectedPoint = ProjectPointOnLineSegment(screenPos1, screenPos2, mousePosition);
 
-        //set z to zero
+        // establece z en cero
         projectedPoint = new Vector3(projectedPoint.x, projectedPoint.y, 0f);
 
         Vector3 vector = projectedPoint - mousePosition;
@@ -612,10 +612,10 @@ public class Math3d : MonoBehaviour
     }
 
 
-    //Returns the pixel distance from the mouse pointer to a camera facing circle.
-    //Alternative for HandleUtility.DistanceToCircle(). Works both in Editor mode and Play mode.
-    //Do not call this function from OnGUI() as the mouse position will be wrong.
-    //If you want the distance to a point instead of a circle, set the radius to 0.
+    // Devuelve la distancia en píxeles desde el puntero del mouse a una cámara que mira hacia el círculo.
+    // Alternativa para HandleUtility.DistanceToCircle (). Funciona tanto en modo Editor como en modo Play.
+    // No llame a esta función desde OnGUI () ya que la posición del mouse será incorrecta.
+    // Si quieres la distancia a un punto en lugar de un círculo, establece el radio en 0.
     public static float MouseDistanceToCircle(Vector3 point, float radius)
     {
 
@@ -654,9 +654,9 @@ public class Math3d : MonoBehaviour
         return circleDistance;
     }
 
-    //Returns true if a line segment (made up of linePoint1 and linePoint2) is fully or partially in a rectangle
-    //made up of RectA to RectD. The line segment is assumed to be on the same plane as the rectangle. If the line is 
-    //not on the plane, use ProjectPointOnPlane() on linePoint1 and linePoint2 first.
+    // Devuelve verdadero si un segmento de línea (compuesto por linePoint1 y linePoint2) está total o parcialmente en un rectángulo
+    // compuesto de RectA a RectD. Se supone que el segmento de línea está en el mismo plano que el rectángulo. Si la linea es
+    // no en el avión, use ProjectPointOnPlane () en linePoint1 y linePoint2 primero.
     public static bool IsLineInRectangle(Vector3 linePoint1, Vector3 linePoint2, Vector3 rectA, Vector3 rectB, Vector3 rectC, Vector3 rectD)
     {
 
@@ -671,7 +671,7 @@ public class Math3d : MonoBehaviour
             pointBInside = IsPointInRectangle(linePoint2, rectA, rectC, rectB, rectD);
         }
 
-        //none of the points are inside, so check if a line is crossing
+        // ninguno de los puntos está dentro, así que verifique si una línea se cruza
         if (!pointAInside && !pointBInside)
         {
 
@@ -700,15 +700,15 @@ public class Math3d : MonoBehaviour
         }
     }
 
-    //Returns true if "point" is in a rectangle mad up of RectA to RectD. The line point is assumed to be on the same 
-    //plane as the rectangle. If the point is not on the plane, use ProjectPointOnPlane() first.
+    // Devuelve verdadero si "punto" está en un rectángulo en lo alto de RectA a RectD. Se supone que el punto de línea está en el mismo
+    // plano como el rectángulo. Si el punto no está en el plano, use ProjectPointOnPlane () primero.
     public static bool IsPointInRectangle(Vector3 point, Vector3 rectA, Vector3 rectC, Vector3 rectB, Vector3 rectD)
     {
 
         Vector3 vector;
         Vector3 linePoint;
 
-        //get the center of the rectangle
+        // obtener el centro del rectángulo
         vector = rectC - rectA;
         float size = -(vector.magnitude / 2f);
         vector = AddVectorLength(vector, size);
@@ -741,8 +741,8 @@ public class Math3d : MonoBehaviour
         }
     }
 
-    //Returns true if line segment made up of pointA1 and pointA2 is crossing line segment made up of
-    //pointB1 and pointB2. The two lines are assumed to be in the same plane.
+    // Devuelve verdadero si el segmento de línea compuesto por el punto A1 y el punto A2 es un segmento de línea cruzada compuesto por
+    // puntoB1 y puntoB2. Se supone que las dos líneas están en el mismo plano.
     public static bool AreLineSegmentsCrossing(Vector3 pointA1, Vector3 pointA2, Vector3 pointB1, Vector3 pointB2)
     {
 
@@ -756,7 +756,7 @@ public class Math3d : MonoBehaviour
 
         bool valid = ClosestPointsOnTwoLines(out closestPointA, out closestPointB, pointA1, lineVecA.normalized, pointB1, lineVecB.normalized);
 
-        //lines are not parallel
+        // las líneas no son paralelas
         if (valid)
         {
 
@@ -776,7 +776,7 @@ public class Math3d : MonoBehaviour
             }
         }
 
-        //lines are parallel
+        // las líneas son paralelas
         else
         {
 
@@ -819,42 +819,20 @@ public class Math3d : MonoBehaviour
     }
 
     /// <summary>
-    /// Determines the closest point between a point and a triangle.
-    /// Borrowed from RPGMesh class of the RPGController package for Unity, by fholm
-    /// The code in this method is copyrighted by the SlimDX Group under the MIT license:
+    /// Determina el punto más cercano entre un punto y un triángulo.
+    /// Tomado de la clase RPGMesh del paquete RPGController para Unity, por fholm
+    /// El código de este método está protegido por copyright de SlimDX Group bajo la licencia MIT:
+    ///
+    ///
+    /// El aviso de copyright anterior y este aviso de permiso se incluirán en
+    /// todas las copias o partes sustanciales del Software.
     /// 
-    /// Copyright (c) 2007-2010 SlimDX Group
-    /// 
-    /// Permission is hereby granted, free of charge, to any person obtaining a copy
-    /// of this software and associated documentation files (the "Software"), to deal
-    /// in the Software without restriction, including without limitation the rights
-    /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    /// copies of the Software, and to permit persons to whom the Software is
-    /// furnished to do so, subject to the following conditions:
-    /// 
-    /// The above copyright notice and this permission notice shall be included in
-    /// all copies or substantial portions of the Software.
-    /// 
-    /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    /// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    /// THE SOFTWARE.
-    /// 
-    /// </summary>
-    /// <param name="point">The point to test.</param>
-    /// <param name="vertex1">The first vertex to test.</param>
-    /// <param name="vertex2">The second vertex to test.</param>
-    /// <param name="vertex3">The third vertex to test.</param>
-    /// <param name="result">When the method completes, contains the closest point between the two objects.</param>
     public static void ClosestPointOnTriangleToPoint(Vector3 vertex1, Vector3 vertex2, Vector3 vertex3, Vector3 point, out Vector3 result)
     {
         //Source: Real-Time Collision Detection by Christer Ericson
         //Reference: Page 136
 
-        //Check if P in vertex region outside A
+        // Comprueba si P en la región del vértice fuera de A
         Vector3 ab = vertex2 - vertex1;
         Vector3 ac = vertex3 - vertex1;
         Vector3 ap = point - vertex1;
@@ -863,40 +841,40 @@ public class Math3d : MonoBehaviour
         float d2 = Vector3.Dot(ac, ap);
         if (d1 <= 0.0f && d2 <= 0.0f)
         {
-            result = vertex1; //Barycentric coordinates (1,0,0)
+            result = vertex1; // Coordenadas barcéntricas (1,0,0)
             return;
         }
 
-        //Check if P in vertex region outside B
+        // Comprueba si P en la región del vértice fuera de B
         Vector3 bp = point - vertex2;
         float d3 = Vector3.Dot(ab, bp);
         float d4 = Vector3.Dot(ac, bp);
         if (d3 >= 0.0f && d4 <= d3)
         {
-            result = vertex2; // barycentric coordinates (0,1,0)
+            result = vertex2; // coordenadas barcéntricas (0,1,0)
             return;
         }
 
-        //Check if P in edge region of AB, if so return projection of P onto AB
+        // Verifique si P en la región del borde de AB, si es así, regrese la proyección de P sobre AB
         float vc = d1 * d4 - d3 * d2;
         if (vc <= 0.0f && d1 >= 0.0f && d3 <= 0.0f)
         {
             float v = d1 / (d1 - d3);
-            result = vertex1 + v * ab; //Barycentric coordinates (1-v,v,0)
+            result = vertex1 + v * ab; // Coordenadas barcéntricas (1-v, v, 0)
             return;
         }
 
-        //Check if P in vertex region outside C
+        // Comprobar si P en la región del vértice fuera de C
         Vector3 cp = point - vertex3;
         float d5 = Vector3.Dot(ab, cp);
         float d6 = Vector3.Dot(ac, cp);
         if (d6 >= 0.0f && d5 <= d6)
         {
-            result = vertex3; //Barycentric coordinates (0,0,1)
+            result = vertex3; // Coordenadas barcéntricas (0,0,1)
             return;
         }
 
-        //Check if P in edge region of AC, if so return projection of P onto AC
+        // Verifique si P en la región del borde de AC, si es así, regrese la proyección de P sobre AC
         float vb = d5 * d2 - d1 * d6;
         if (vb <= 0.0f && d2 >= 0.0f && d6 <= 0.0f)
         {
@@ -905,7 +883,7 @@ public class Math3d : MonoBehaviour
             return;
         }
 
-        //Check if P in edge region of BC, if so return projection of P onto BC
+        // Verifique si P en la región del borde de BC, si es así, regrese la proyección de P sobre BC
         float va = d3 * d6 - d5 * d4;
         if (va <= 0.0f && (d4 - d3) >= 0.0f && (d5 - d6) >= 0.0f)
         {
@@ -914,10 +892,10 @@ public class Math3d : MonoBehaviour
             return;
         }
 
-        //P inside face region. Compute Q through its barycentric coordinates (u,v,w)
+        // P dentro de la región de la cara. Calcule Q a través de sus coordenadas barcéntricas (u, v, w)
         float denom = 1.0f / (va + vb + vc);
         float v2 = vb * denom;
         float w2 = vc * denom;
-        result = vertex1 + ab * v2 + ac * w2; //= u*vertex1 + v*vertex2 + w*vertex3, u = va * denom = 1.0f - v - w
+        result = vertex1 + ab * v2 + ac * w2; // = u * vértice1 + v * vértice2 + w * vértice3, u = va * denom = 1.0f - v - w
     }
 }

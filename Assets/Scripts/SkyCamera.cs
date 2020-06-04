@@ -39,7 +39,7 @@ public class SkyCamera : MonoBehaviour
 
 	void Update () 
 	{
-        float zoomInput = -Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
+        float zoomInput = -Input.GetAxis("Mouse Rueda de desplazamiento") * zoomSensitivity;
 
         currentDistance = Mathf.Clamp(currentDistance + zoomInput, minDistance, maxDistance);
 

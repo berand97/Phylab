@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 
 /// <summary>
-/// Attach this to any object that is either a ParticleSystem, or has one or more ParticleSystems
-/// as child objects. After all ParticleSystems (including the children and this object's) have finished emitting
-/// the object will self-destruct, or alternatively if an audio source is playing will self-destruct after both it
-/// and the particle systems have finished playing
+/// Adjunte esto a cualquier objeto que sea un ParticleSystem o que tenga uno o más ParticleSystems
+/// como objetos secundarios. Después de que todos los ParticleSystems (incluidos los hijos y este objeto) hayan terminado de emitirse
+/// el objeto se autodestruirá, o alternativamente, si se está reproduciendo una fuente de audio, se autodestruirá después de ambos
+/// y los sistemas de partículas han terminado de jugar
 /// </summary>
 public class ParticleMaster : MonoBehaviour {
 
